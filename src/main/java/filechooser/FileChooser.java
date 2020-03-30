@@ -61,18 +61,20 @@ public class FileChooser extends JPanel implements ActionListener {
         String outfile = filelocationstrict + "linehaul2.csv";
         String outfile2 = filelocationstrict + "linehaul3.csv";
         String standard = filelocationstrict + "standard.csv";
+        String standard2 = filelocationstrict + "standard2.csv";
         String seasonal = filelocationstrict + "seasonal.csv";
+        String seasonal2 = filelocationstrict + "seasonal2.csv";
         String both = filelocationstrict + "standAndseas.csv";
 
         //Handle button action.
         if (e.getSource() == openButton) {
             handleOpenFileBtn();
         } else if (e.getSource() == enpStandbtn) {
-            handleStandardsIntoFile(fileorg, outfile, outfile2, standard);
+            handleStandardsIntoFile(fileorg, outfile, outfile2, standard, standard2);
         } else if (e.getSource() == enpSeasbtn) {
-            handleSeasonalsIntoFile(fileorg, outfile, outfile2, seasonal);
+            handleSeasonalsIntoFile(fileorg, outfile, outfile2, seasonal, seasonal2);
         } else if (e.getSource() == bothSepfiles) {
-            handleBothIntoSeparateFiles(fileorg, outfile, outfile2, standard, seasonal);
+            handleBothIntoSeparateFiles(fileorg, outfile, outfile2, standard, standard2, seasonal, seasonal2);
         } else if (e.getSource() == bothOnefile) {
             handleBothIntoOneFile(fileorg, outfile, outfile2, both);
         }
@@ -95,27 +97,27 @@ public class FileChooser extends JPanel implements ActionListener {
         log.setCaretPosition(log.getDocument().getLength());
     }
 
-    private void handleStandardsIntoFile(String fileorg, String outfile, String outfile2, String standard) {
+    private void handleStandardsIntoFile(String fileorg, String outfile, String outfile2, String standard, String standard2) {
         log.append("Preparing Standards." + newline);
         GeneralPreps generalPreps = new GeneralPreps();
-        generalPreps.prepOfStandard(fileorg, outfile, outfile2, standard);
+        generalPreps.prepOfStandard(fileorg, outfile, outfile2, standard, standard2);
         log.append("Done, check your file." + newline);
         log.setCaretPosition(log.getDocument().getLength());
     }
 
-    private void handleSeasonalsIntoFile(String fileorg, String outfile, String outfile2, String seasonal) {
+    private void handleSeasonalsIntoFile(String fileorg, String outfile, String outfile2, String seasonal, String seasonal2) {
         log.append("Preparing Seasonals." + newline);
         GeneralPreps generalPreps = new GeneralPreps();
-        generalPreps.prepOfSeasonal(fileorg, outfile, outfile2, seasonal);
+        generalPreps.prepOfSeasonal(fileorg, outfile, outfile2, seasonal, seasonal2);
         log.append("Done, check your file." + newline);
         log.setCaretPosition(log.getDocument().getLength());
     }
 
-    private void handleBothIntoSeparateFiles(String fileorg, String outfile, String outfile2, String standard, String seasonal) {
+    private void handleBothIntoSeparateFiles(String fileorg, String outfile, String outfile2, String standard, String standard2, String seasonal, String seasonal2) {
         log.append("Preparing both types in different files." + newline);
         GeneralPreps generalPreps = new GeneralPreps();
-        generalPreps.prepOfStandard(fileorg, outfile, outfile2, standard);
-        generalPreps.prepOfSeasonal(fileorg, outfile, outfile2, seasonal);
+        generalPreps.prepOfStandard(fileorg, outfile, outfile2, standard, standard2);
+        generalPreps.prepOfSeasonal(fileorg, outfile, outfile2, seasonal, seasonal2);
         log.append("Done, check your file." + newline);
         log.setCaretPosition(log.getDocument().getLength());
     }

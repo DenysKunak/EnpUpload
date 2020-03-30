@@ -16,7 +16,7 @@ public class InfAdd {
     char separator = windowsReqistry.retrieveSeparator();
     String stringseparator = String.valueOf(separator);
 
-    public void addLnCdForSeas(String file, String outfile) {
+    public void addLnCdForSeas(String file, String outfile, String outfile2) {
 
         LocalDate date = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -27,9 +27,12 @@ public class InfAdd {
             CSVReader csvReader = new CSVReader(fileReader, separator);
             FileWriter fileWriter = new FileWriter(outfile, true);
             CSVWriter csvWriter = new CSVWriter(fileWriter, separator, CSVWriter.NO_QUOTE_CHARACTER);
+            FileWriter fileWriter2 = new FileWriter(outfile2, true);
+            CSVWriter csvWriter2 = new CSVWriter(fileWriter2, separator, CSVWriter.NO_QUOTE_CHARACTER);
 
             List<String[]> allRows = csvReader.readAll();
             List<String[]> modfRows = new ArrayList<String[]>();
+            List<String[]> modfRows2 = new ArrayList<String[]>();
 
             for (String[] row : allRows) {
                 List<LocalDate> valToFromDateArr = new ArrayList<LocalDate>();
@@ -51,10 +54,16 @@ public class InfAdd {
                     }
                 }
                 if (valToFromDateArr.get(1).isAfter(date)) {
-                    WholeRow = WholeRow.replace(stringseparator + "0" + stringseparator, stringseparator + "accepted" + stringseparator);
-                } else if (valToFromDateArr.get(1).equals(date) || valToFromDateArr.get(1).isBefore(date)) {
-                    WholeRow = WholeRow.replace(stringseparator + "0" + stringseparator, stringseparator + "expired" + stringseparator);
+                    WholeRow = WholeRow.replace(stringseparator + "Standard" + stringseparator + "0" + stringseparator, stringseparator + "Standard" + stringseparator + "accepted" + stringseparator);
+                    WholeRow = WholeRow.replace(stringseparator + "Additional" + stringseparator + "0" + stringseparator, stringseparator + "Additional" + stringseparator + "accepted" + stringseparator);
                 }
+
+
+                else if (valToFromDateArr.get(1).equals(date) || valToFromDateArr.get(1).isBefore(date)) {
+                    WholeRow = WholeRow.replace(stringseparator + "Standard" + stringseparator + "0" + stringseparator, stringseparator + "Standard" + stringseparator + "expired" + stringseparator);
+                    WholeRow = WholeRow.replace(stringseparator + "Additional" + stringseparator + "0" + stringseparator, stringseparator + "Additional" + stringseparator + "expired" + stringseparator);
+                }
+
                 WholeRow = WholeRow.replace("CrossBorder", "Cross Border");
                 WholeRow = WholeRow.replace("+1Week", "+1 Week");
                 WholeRow = WholeRow.replace("+2Week", "+2 Week");
@@ -62,15 +71,27 @@ public class InfAdd {
                 String[] WholeRowObj = WholeRow.split(stringseparator);
                 modfRows.add(WholeRowObj);
             }
+
+            int modfRowsSize = modfRows.size();
+            for (int a = (modfRows.size()/2); a < modfRows.size(); a++){
+                modfRows2.add(modfRows.get(a));
+            }
+
+            for (int b = (modfRowsSize -1); b > (modfRowsSize/2); b--){
+                modfRows.remove(b);
+            }
+
             csvWriter.writeAll(modfRows);
+            csvWriter2.writeAll(modfRows2);
             csvReader.close();
             csvWriter.close();
+            csvWriter2.close();
         } catch (Exception exp) {
             exp.printStackTrace();
         }
     }
 
-    public void addLnCdForStd(String file, String outfile) {
+    public void addLnCdForStd(String file, String outfile, String outfile2) {
 
         LocalDate date = LocalDate.now();
         LocalDate valToDate = date;
@@ -82,9 +103,12 @@ public class InfAdd {
             CSVReader csvReader = new CSVReader(fileReader, separator);
             FileWriter fileWriter = new FileWriter(outfile, true);
             CSVWriter csvWriter = new CSVWriter(fileWriter, separator, CSVWriter.NO_QUOTE_CHARACTER, stringseparator + stringseparator + "\n");
+            FileWriter fileWriter2 = new FileWriter(outfile2, true);
+            CSVWriter csvWriter2 = new CSVWriter(fileWriter2, separator, CSVWriter.NO_QUOTE_CHARACTER, stringseparator + stringseparator + "\n");
 
             List<String[]> allRows = csvReader.readAll();
             List<String[]> modfRows = new ArrayList<String[]>();
+            List<String[]> modfRows2 = new ArrayList<String[]>();
 
             for (String[] row : allRows) {
                 List<String> cellArr = new ArrayList<String>();
@@ -122,9 +146,21 @@ public class InfAdd {
                 String[] WholeRowObj = WholeRow.split(stringseparator);
                 modfRows.add(WholeRowObj);
             }
+
+            int modfRowsSize = modfRows.size();
+            for (int a = (modfRows.size()/2); a < modfRows.size(); a++){
+                modfRows2.add(modfRows.get(a));
+            }
+
+            for (int b = (modfRowsSize -1); b > (modfRowsSize/2); b--){
+                modfRows.remove(b);
+            }
+
             csvWriter.writeAll(modfRows);
+            csvWriter2.writeAll(modfRows2);
             csvReader.close();
             csvWriter.close();
+            csvWriter2.close();
         } catch (Exception exp) {
             exp.printStackTrace();
         }
